@@ -185,7 +185,7 @@ public class AI_Behaviour : MonoBehaviour
 
         aldyStartedTarget1 = true;
         target1 = false;
-        agent.SetDestination(Target1.transform.position);
+        SetDestination(Target1.transform, false);
         target2 = true;
         aldyStartedTarget2 = false;
         adystartedGoTarget = true;
@@ -198,7 +198,7 @@ public class AI_Behaviour : MonoBehaviour
 
         aldyStartedTarget2 = true;
         target2 = false;
-        agent.SetDestination(Target2.transform.position);
+        SetDestination(Target2.transform, false);
         target1 = true;
         aldyStartedTarget1 = false;
         adystartedGoTarget = true;
