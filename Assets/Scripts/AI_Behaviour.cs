@@ -86,18 +86,19 @@ public class AI_Behaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (awarenessMeter_White != 0 )
-        //{
+        if (awarenessMeter_White != 0)
+        {
 
-        //    inGuard = false;
+            inGuard = false;
 
-        //}
-        //else
-        //{
+        }
+        else
+        {
 
-        //    inGuard = true;
+            inGuard = true;
 
-        //}
+        }
+
         inGuard = true;
         if (inGuard && !adystarted)
         {
@@ -111,16 +112,16 @@ public class AI_Behaviour : MonoBehaviour
         if (agent.remainingDistance < 1f )
         {
             Debug.Log("Let's Go");
-            adystartedGoTarget = false;
+            Invoke("WaitBeforeGo", 1f);
 
-            if (target1 && !aldyStartedTarget1 && !adystartedGoTarget)
+            if (target1 && !aldyStartedTarget1 && !adystartedGoTarget )
             {
-
+                
                 GoTarget1();
 
             }
 
-            if (target2 && !aldyStartedTarget2 && !adystartedGoTarget)
+            if (target2 && !aldyStartedTarget2 && !adystartedGoTarget )
             {
 
                 GoTarget2();
@@ -201,6 +202,13 @@ public class AI_Behaviour : MonoBehaviour
         target1 = true;
         aldyStartedTarget1 = false;
         adystartedGoTarget = true;
+
+    }
+
+    public void WaitBeforeGo()
+    {
+
+        adystartedGoTarget = false;
 
     }
 
