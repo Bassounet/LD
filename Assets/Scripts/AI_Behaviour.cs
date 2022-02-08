@@ -60,6 +60,12 @@ public class AI_Behaviour : MonoBehaviour
     public bool adyawarness;
     [SerializeField] GameObject Target1, Target2;
 
+    [Header("Ronde de Theatre")]
+
+    public bool acteur;
+    public bool acting;
+    public float TimeOnScene; 
+    public float TimeOnLoge; 
 
 
 
@@ -87,66 +93,108 @@ public class AI_Behaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (awarenessMeter_White != 0)
+
+        #region Systeme de Garde
+
+        if ( !acteur)
         {
 
-            inGuard = false;
-            agent.speed = 0;
-            if (isSeeingPlayer && !adyawarness)
+            if (awarenessMeter_White != 0)
             {
 
-                anim.CrossFade("IdleSword", 0.05f);
-                adyawarness = true;
+                inGuard = false;
+                agent.speed = 0;
+                if (isSeeingPlayer && !adyawarness)
+                {
+
+                    anim.CrossFade("IdleSword", 0.05f);
+                    adyawarness = true;
+
+                }
 
             }
-            //else
-            //{
+            else
+            {
 
-            //    adyawarness = false;
+                inGuard = true;
+                agent.speed = 1.25f;
+                anim.speed = 1;
 
-            //}
-
-        }
-        else
-        {
+            }
 
             inGuard = true;
-            agent.speed = 1.25f;
-            anim.speed = 1;
-
-        }
-
-        inGuard = true;
-        if (inGuard && !adystarted)
-        {
-
-            agent.SetDestination(Target1.transform.position);
-            target1 = true;
-            adystarted = true;
-
-        }
-
-        if (agent.remainingDistance < 1f )
-        {
-            Debug.Log("Let's Go");
-            Invoke("WaitBeforeGo", 1f);
-
-            if (target1 && !aldyStartedTarget1 && !adystartedGoTarget )
+            if (inGuard && !adystarted)
             {
-                
-                GoTarget1();
+
+                agent.SetDestination(Target1.transform.position);
+                target1 = true;
+                adystarted = true;
 
             }
 
-            if (target2 && !aldyStartedTarget2 && !adystartedGoTarget )
+            if (agent.remainingDistance < 1f)
+            {
+                Debug.Log("Let's Go");
+                Invoke("WaitBeforeGo", 1f);
+
+                if (target1 && !aldyStartedTarget1 && !adystartedGoTarget)
+                {
+
+                    GoTarget1();
+
+                }
+
+                if (target2 && !aldyStartedTarget2 && !adystartedGoTarget)
+                {
+
+                    GoTarget2();
+
+                }
+
+            }
+
+
+            #endregion
+        }
+        else if( acteur)
+        {
+
+            acting = true;
+
+            if (!adystarted)
             {
 
-                GoTarget2();
+                agent.SetDestination(Target1.transform.position);
+                target1 = true;
+                adystarted = true;
+
+            }
+
+            if (agent.remainingDistance < 1f)
+            {
+                Debug.Log("Let's Go");
+                Invoke("WaitBeforeGo", 1f);
+
+                if (target1 && !aldyStartedTarget1 && !adystartedGoTarget)
+                {
+
+                    Invoke("GoTarget1", TimeOnScene);
+
+                }
+
+                if (target2 && !aldyStartedTarget2 && !adystartedGoTarget)
+                {
+
+                    Invoke("GoTarget2", TimeOnLoge);
+
+                }
 
             }
 
         }
 
+
+        #region Rest_Update
 
         CheckState();
         if (isDead || isUnconscious)
@@ -192,6 +240,10 @@ public class AI_Behaviour : MonoBehaviour
             CheckDestination();
             CheckStateForCombat();
         }
+
+        #endregion
+
+
     }
 
 
