@@ -57,6 +57,7 @@ public class AI_Behaviour : MonoBehaviour
     public bool adystartedGoTarget;
     public bool aldyStartedTarget1;
     public bool aldyStartedTarget2;
+    public bool adyawarness;
     [SerializeField] GameObject Target1, Target2;
 
 
@@ -90,12 +91,28 @@ public class AI_Behaviour : MonoBehaviour
         {
 
             inGuard = false;
+            agent.speed = 0;
+            if (isSeeingPlayer && !adyawarness)
+            {
+
+                anim.CrossFade("IdleSword", 0.05f);
+                adyawarness = true;
+
+            }
+            //else
+            //{
+
+            //    adyawarness = false;
+
+            //}
 
         }
         else
         {
 
             inGuard = true;
+            agent.speed = 1.25f;
+            anim.speed = 1;
 
         }
 
