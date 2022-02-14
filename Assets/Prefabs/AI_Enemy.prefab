@@ -70373,8 +70373,19 @@ MonoBehaviour:
   myBlade: {fileID: 0}
   agent: {fileID: 0}
   inGuard: 0
+  target2: 0
+  target1: 0
+  adystarted: 0
+  adystartedGoTarget: 0
+  aldyStartedTarget1: 0
+  aldyStartedTarget2: 0
+  adyawarness: 0
   Target1: {fileID: 0}
   Target2: {fileID: 0}
+  acteur: 0
+  acting: 0
+  TimeOnScene: 0
+  TimeOnLoge: 0
 --- !u!195 &195354563715981578
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -70388,7 +70399,7 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 4
   avoidancePriority: 50
-  m_AngularSpeed: 0
+  m_AngularSpeed: 360
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1

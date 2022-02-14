@@ -96,6 +96,8 @@ public class AI_Behaviour : MonoBehaviour
 
         #region Systeme de Garde
 
+
+
         if ( !acteur)
         {
 
@@ -394,7 +396,7 @@ public class AI_Behaviour : MonoBehaviour
             reachingDestination = false;
             agent.SetDestination(destination.position);
             agent.speed = isRunning ? 6f : 1.25f;
-            agent.acceleration = isRunning ? 16 : 2;
+            //agent.acceleration = isRunning ? 16 : 2;
             AnimatorStateInfo animStateInfo;
             animStateInfo = anim.GetNextAnimatorStateInfo(0);
             if (!animStateInfo.IsName("Base Layer.Run") && !animStateInfo.IsName("Base Layer.Standard Walk"))
@@ -489,10 +491,11 @@ public class AI_Behaviour : MonoBehaviour
 
     void CheckStateForCombat()
     {
+
         if(awarenessMeter_Red > 0 && !bladeInHand)
         {
             SwordInHand();
-            Invoke("ReadyToChasePlayer", 3f);
+            Invoke("ReadyToChasePlayer", 1f);
         }
 
         if(awarenessMeter_Red >= 1)
