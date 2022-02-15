@@ -58,14 +58,19 @@ public class AI_Behaviour : MonoBehaviour
     public bool aldyStartedTarget1;
     public bool aldyStartedTarget2;
     public bool adyawarness;
+    public bool adyseenPlayer;
+    public bool Atdestination;
     [SerializeField] GameObject Target1, Target2;
 
     [Header("Ronde de Theatre")]
 
     public bool acteur;
     public bool acting;
+    [Header("Temps Target 1")]
+    public float TimeOnLoge;
+    [Header("Temps Target 2")]
     public float TimeOnScene; 
-    public float TimeOnLoge; 
+    
 
 
 
@@ -100,16 +105,23 @@ public class AI_Behaviour : MonoBehaviour
 
         if ( !acteur)
         {
+            if (isSeeingPlayer )
+                {
 
+                    anim.CrossFade("IdleSword", 0.05f);
+                    adyawarness = true;
+
+                }
             if (awarenessMeter_White != 0)
             {
 
                 inGuard = false;
                 agent.speed = 0;
-                if (isSeeingPlayer && !adyawarness)
+                if (isSeeingPlayer )
                 {
 
                     anim.CrossFade("IdleSword", 0.05f);
+                    anim.StopPlayback();
                     adyawarness = true;
 
                 }
@@ -136,7 +148,7 @@ public class AI_Behaviour : MonoBehaviour
 
             if (agent.remainingDistance < 1f)
             {
-                Debug.Log("Let's Go");
+                Debug.Log("Let's Go");                
                 Invoke("WaitBeforeGo", 1f);
 
                 if (target1 && !aldyStartedTarget1 && !adystartedGoTarget)
@@ -160,38 +172,43 @@ public class AI_Behaviour : MonoBehaviour
         }
         else if( acteur)
         {
+           
+                acting = true;
 
-            acting = true;
-
-            if (!adystarted)
-            {
-
-                agent.SetDestination(Target1.transform.position);
-                target1 = true;
-                adystarted = true;
-
-            }
-
-            if (agent.remainingDistance < 1f)
-            {
-                Debug.Log("Let's Go");
-                Invoke("WaitBeforeGo", 1f);
-
-                if (target1 && !aldyStartedTarget1 && !adystartedGoTarget)
+                if (!adystarted)
                 {
 
-                    Invoke("GoTarget1", TimeOnScene);
+                    agent.SetDestination(Target1.transform.position);
+                    target1 = true;
+                    adystarted = true;
 
                 }
 
-                if (target2 && !aldyStartedTarget2 && !adystartedGoTarget)
+                if (agent.remainingDistance < 1f)
                 {
+                    Debug.Log("Let's Go");
+                    Invoke("WaitBeforeGo", 1f);
+                    Atdestination = true;
 
-                    Invoke("GoTarget2", TimeOnLoge);
+                    if (target1 && !aldyStartedTarget1 && !adystartedGoTarget)
+                    {
+
+                        anim.CrossFade("Idle", 0.02f);
+                        Invoke("GoTarget1", TimeOnScene);
+
+                    }
+
+                    if (target2 && !aldyStartedTarget2 && !adystartedGoTarget)
+                    {
+
+                        anim.CrossFade("Idle", 0.02f);                    
+                        Invoke("GoTarget2", TimeOnLoge);
+
+                    }
 
                 }
 
-            }
+                                
 
         }
 
@@ -252,14 +269,13 @@ public class AI_Behaviour : MonoBehaviour
     public void GoTarget1()
     {
 
-        Debug.Log("Je vais target 1");
-
         aldyStartedTarget1 = true;
         target1 = false;
         SetDestination(Target1.transform, false);
         target2 = true;
         aldyStartedTarget2 = false;
         adystartedGoTarget = true;
+        Atdestination = false;
 
     }
 
@@ -273,6 +289,7 @@ public class AI_Behaviour : MonoBehaviour
         target1 = true;
         aldyStartedTarget1 = false;
         adystartedGoTarget = true;
+        Atdestination = false;
 
     }
 
@@ -280,6 +297,7 @@ public class AI_Behaviour : MonoBehaviour
     {
 
         adystartedGoTarget = false;
+        
 
     }
 
@@ -393,16 +411,17 @@ public class AI_Behaviour : MonoBehaviour
     {
         if (agent.enabled)
         {
-            reachingDestination = false;
-            agent.SetDestination(destination.position);
-            agent.speed = isRunning ? 6f : 1.25f;
-            //agent.acceleration = isRunning ? 16 : 2;
-            AnimatorStateInfo animStateInfo;
-            animStateInfo = anim.GetNextAnimatorStateInfo(0);
-            if (!animStateInfo.IsName("Base Layer.Run") && !animStateInfo.IsName("Base Layer.Standard Walk"))
-            {
-                anim.CrossFade(isRunning ? "Run" : "Standard Walk", 0.05f);
-            }
+           
+                reachingDestination = false;
+                agent.SetDestination(destination.position);
+                agent.speed = isRunning ? 6f : 1.25f;
+                //agent.acceleration = isRunning ? 16 : 2;
+                AnimatorStateInfo animStateInfo;
+                animStateInfo = anim.GetNextAnimatorStateInfo(0);            
+                if (!animStateInfo.IsName("Base Layer.Run") && !animStateInfo.IsName("Base Layer.Standard Walk") && !Atdestination)
+                {
+                    anim.CrossFade(isRunning ? "Run" : "Standard Walk", 0.1f);
+                }           
         }
     }
 
@@ -423,10 +442,10 @@ public class AI_Behaviour : MonoBehaviour
 
 
 
-    void DoStuffAtDestination()
-    {
-        anim.CrossFade("Idle", 0.05f);
-    }
+    //void DoStuffAtDestination()
+    //{
+    //    anim.CrossFade("Idle", 0.05f);
+    //}
 
 
 
@@ -491,7 +510,7 @@ public class AI_Behaviour : MonoBehaviour
 
     void CheckStateForCombat()
     {
-
+        
         if(awarenessMeter_Red > 0 && !bladeInHand)
         {
             SwordInHand();
