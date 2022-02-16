@@ -51,23 +51,23 @@ public class AI_Behaviour : MonoBehaviour
     [Header("Ronde")]
 
     public bool inGuard;
-    public bool target2;
-    public bool target1;
+    public bool Scene;
+    public bool Loge;
     public bool adystarted;
     public bool adystartedGoTarget;
-    public bool aldyStartedTarget1;
-    public bool aldyStartedTarget2;
+    public bool aldyStartedLoge;
+    public bool aldyStartedScene;
     public bool adyawarness;
     public bool recentlySeenPlayer;
     public bool Auposte;
-    [SerializeField] GameObject Target1, Target2;
+    [SerializeField] GameObject PosLoge, PoseScence;
 
 
-    [Header("Temps Target 1")]
-    public float TimeToStayAtTarget1;
+    [Header("Rest Before Loge")]
+    public float TimeToGoLoge;
 
-    [Header("Temps Target 2")]
-    public float TimeToStayAtTarget2;
+    [Header("Rest before Scene")]
+    public float TimeToGoScene;
 
     // Use this for initialization
     void Start()
@@ -109,7 +109,7 @@ public class AI_Behaviour : MonoBehaviour
 
         }
 
-        if ( awarenessMeter_White != 0)
+        if ( awarenessMeter_White != 0 && !readyToChasePlayer)
         {
 
            agent.speed = 0;
@@ -117,8 +117,8 @@ public class AI_Behaviour : MonoBehaviour
         }
         else
         {
-            if (recentlySeenPlayer)
-            SetDestination(Target1.transform, false);
+            if (recentlySeenPlayer && !isSeeingPlayer)
+                Invoke("RetourLoge", 2f);
             recentlySeenPlayer = false;
             inGuard = true;
         }
@@ -132,7 +132,7 @@ public class AI_Behaviour : MonoBehaviour
         else
         {
 
-            Invoke("LostPLayer", 3f);
+            Invoke("LostPLayer", 0.01f);
 
         }
 
@@ -140,30 +140,29 @@ public class AI_Behaviour : MonoBehaviour
             if (inGuard && !adystarted)
             {
 
-                SetDestination(Target1.transform, false); 
-                target1 = true;
+                SetDestination(PosLoge.transform, false); 
+                Loge = true;
                 adystarted = true;
 
             }
 
             if (agent.remainingDistance < 1f && inGuard)
             {
-
-                Debug.Log("Let's Go");
-            Auposte = true;
+                
+                Auposte = true;
                 Invoke("WaitBeforeGo", 1f);
 
-                if (target1 && !aldyStartedTarget1 && !adystartedGoTarget )
+                if (Loge && !aldyStartedScene && !adystartedGoTarget )
                 {
 
-                Invoke("GoTarget1", TimeToStayAtTarget1);
+                    Invoke("GoToScene", TimeToGoScene);
 
                 }
 
-                if (target2 && !aldyStartedTarget2 && !adystartedGoTarget )
+                if (Scene && !aldyStartedLoge && !adystartedGoTarget )
                 {
 
-                    Invoke("GoTarget2", TimeToStayAtTarget2);
+                    Invoke("GoToLoge", TimeToGoLoge);
 
                 }
 
@@ -237,38 +236,49 @@ public class AI_Behaviour : MonoBehaviour
 
     }
 
-    public void GoTarget1()
+    public void RetourLoge()
     {
 
-        aldyStartedTarget1 = true;
-        target1 = false;
-        SetDestination(Target1.transform, false);
-        target2 = true;
-        aldyStartedTarget2 = false;
+        SetDestination(PosLoge.transform, false);
+        Scene = false;
+        Loge = true;
+        aldyStartedLoge = true;
+        adystartedGoTarget = true;
+        aldyStartedScene = false;
+
+    }
+
+    public void GoToLoge()
+    {
+
+        Debug.Log("TGo to Loge");
+        aldyStartedLoge = true;
+        Loge = true;
+        SetDestination(PosLoge.transform, false);
+        Scene = false;
+        aldyStartedScene = false;
         adystartedGoTarget = true;
         
 
     }
 
-    public void GoTarget2()
+    public void GoToScene()
     {
-        Debug.Log("Go To Target 2");
 
-        aldyStartedTarget2 = true;
-        target2 = false;
-        SetDestination(Target2.transform, false);
-        target1 = true;
-        aldyStartedTarget1 = false;
-        adystartedGoTarget = true;
-        
+        Debug.Log("Go To Scene");
+        aldyStartedScene = true;
+        Scene = true;
+        SetDestination(PoseScence.transform, false);
+        Loge = false;
+        aldyStartedLoge = false;
+        adystartedGoTarget = true;        
 
     }
 
     public void WaitBeforeGo()
     {
 
-        adystartedGoTarget = false;
-        
+        adystartedGoTarget = false;       
 
     }
 
