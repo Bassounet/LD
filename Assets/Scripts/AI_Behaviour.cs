@@ -59,7 +59,6 @@ public class AI_Behaviour : MonoBehaviour
     public bool aldyStartedTarget2;
     public bool adyawarness;
     public bool adyseenPlayer;
-    public bool Atdestination;
     [SerializeField] GameObject Target1, Target2;
 
     [Header("Ronde de Theatre")]
@@ -102,45 +101,20 @@ public class AI_Behaviour : MonoBehaviour
         #region Systeme de Garde
 
 
+            //if (awarenessMeter_White != 0)
+            //{
 
-        if ( !acteur)
-        {
-            if (isSeeingPlayer )
-                {
+            //    inGuard = false;
+            //    agent.speed = 0;
+              
 
-                    anim.CrossFade("IdleSword", 0.05f);
-                    adyawarness = true;
+            //}
 
-                }
-            if (awarenessMeter_White != 0)
-            {
-
-                inGuard = false;
-                agent.speed = 0;
-                if (isSeeingPlayer )
-                {
-
-                    anim.CrossFade("IdleSword", 0.05f);
-                    anim.StopPlayback();
-                    adyawarness = true;
-
-                }
-
-            }
-            else
-            {
-
-                inGuard = true;
-                agent.speed = 1.25f;
-                anim.speed = 1;
-
-            }
-
-            inGuard = true;
+            
             if (inGuard && !adystarted)
             {
 
-                agent.SetDestination(Target1.transform.position);
+                SetDestination(Target1.transform, false); 
                 target1 = true;
                 adystarted = true;
 
@@ -169,49 +143,6 @@ public class AI_Behaviour : MonoBehaviour
 
 
             #endregion
-        }
-        else if( acteur)
-        {
-           
-                acting = true;
-
-                if (!adystarted)
-                {
-
-                    agent.SetDestination(Target1.transform.position);
-                    target1 = true;
-                    adystarted = true;
-
-                }
-
-                if (agent.remainingDistance < 1f)
-                {
-                    Debug.Log("Let's Go");
-                    Invoke("WaitBeforeGo", 1f);
-                    Atdestination = true;
-
-                    if (target1 && !aldyStartedTarget1 && !adystartedGoTarget)
-                    {
-
-                        anim.CrossFade("Idle", 0.02f);
-                        Invoke("GoTarget1", TimeOnScene);
-
-                    }
-
-                    if (target2 && !aldyStartedTarget2 && !adystartedGoTarget)
-                    {
-
-                        anim.CrossFade("Idle", 0.02f);                    
-                        Invoke("GoTarget2", TimeOnLoge);
-
-                    }
-
-                }
-
-                                
-
-        }
-
 
         #region Rest_Update
 
@@ -275,7 +206,7 @@ public class AI_Behaviour : MonoBehaviour
         target2 = true;
         aldyStartedTarget2 = false;
         adystartedGoTarget = true;
-        Atdestination = false;
+        
 
     }
 
@@ -289,7 +220,7 @@ public class AI_Behaviour : MonoBehaviour
         target1 = true;
         aldyStartedTarget1 = false;
         adystartedGoTarget = true;
-        Atdestination = false;
+        
 
     }
 
@@ -418,7 +349,7 @@ public class AI_Behaviour : MonoBehaviour
                 //agent.acceleration = isRunning ? 16 : 2;
                 AnimatorStateInfo animStateInfo;
                 animStateInfo = anim.GetNextAnimatorStateInfo(0);            
-                if (!animStateInfo.IsName("Base Layer.Run") && !animStateInfo.IsName("Base Layer.Standard Walk") && !Atdestination)
+                if (!animStateInfo.IsName("Base Layer.Run") && !animStateInfo.IsName("Base Layer.Standard Walk") )
                 {
                     anim.CrossFade(isRunning ? "Run" : "Standard Walk", 0.1f);
                 }           
