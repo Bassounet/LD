@@ -58,20 +58,16 @@ public class AI_Behaviour : MonoBehaviour
     public bool aldyStartedTarget1;
     public bool aldyStartedTarget2;
     public bool adyawarness;
-    public bool adyseenPlayer;
+    public bool recentlySeenPlayer;
+    public bool Auposte;
     [SerializeField] GameObject Target1, Target2;
 
-    [Header("Ronde de Theatre")]
 
-    public bool acteur;
-    public bool acting;
     [Header("Temps Target 1")]
-    public float TimeOnLoge;
+    public float TimeToStayAtTarget1;
+
     [Header("Temps Target 2")]
-    public float TimeOnScene; 
-    
-
-
+    public float TimeToStayAtTarget2;
 
     // Use this for initialization
     void Start()
@@ -100,17 +96,47 @@ public class AI_Behaviour : MonoBehaviour
 
         #region Systeme de Garde
 
+        if (Auposte)
+        {
 
-            //if (awarenessMeter_White != 0)
-            //{
+            anim.speed = 0;
 
-            //    inGuard = false;
-            //    agent.speed = 0;
-              
+        }
+        else
+        {
 
-            //}
+            anim.speed = 1;
 
-            
+        }
+
+        if ( awarenessMeter_White != 0)
+        {
+
+           agent.speed = 0;
+
+        }
+        else
+        {
+            if (recentlySeenPlayer)
+            SetDestination(Target1.transform, false);
+            recentlySeenPlayer = false;
+            inGuard = true;
+        }
+
+        if (isSeeingPlayer)
+        {
+
+            recentlySeenPlayer = true;
+
+        }
+        else
+        {
+
+            Invoke("LostPLayer", 3f);
+
+        }
+
+
             if (inGuard && !adystarted)
             {
 
@@ -120,26 +146,34 @@ public class AI_Behaviour : MonoBehaviour
 
             }
 
-            if (agent.remainingDistance < 1f)
+            if (agent.remainingDistance < 1f && inGuard)
             {
-                Debug.Log("Let's Go");                
+
+                Debug.Log("Let's Go");
+            Auposte = true;
                 Invoke("WaitBeforeGo", 1f);
 
-                if (target1 && !aldyStartedTarget1 && !adystartedGoTarget)
+                if (target1 && !aldyStartedTarget1 && !adystartedGoTarget )
                 {
 
-                    GoTarget1();
+                Invoke("GoTarget1", TimeToStayAtTarget1);
 
                 }
 
-                if (target2 && !aldyStartedTarget2 && !adystartedGoTarget)
+                if (target2 && !aldyStartedTarget2 && !adystartedGoTarget )
                 {
 
-                    GoTarget2();
+                    Invoke("GoTarget2", TimeToStayAtTarget2);
 
                 }
 
-            }
+        }
+        else
+        {
+
+            Auposte = false;
+
+        }
 
 
             #endregion
@@ -196,6 +230,12 @@ public class AI_Behaviour : MonoBehaviour
 
     }
 
+    public void LostPlayer()
+    {
+
+        recentlySeenPlayer = false;
+
+    }
 
     public void GoTarget1()
     {
@@ -277,7 +317,7 @@ public class AI_Behaviour : MonoBehaviour
         UI_ChokeLoad.fillAmount = 0;
     }
 
-
+    
 
     public void Kill()
     {
@@ -455,6 +495,8 @@ public class AI_Behaviour : MonoBehaviour
 
             if (readyToChasePlayer)
             {
+                inGuard = false;
+
                 if (!agent.hasPath || (agent.hasPath && agent.remainingDistance > 2.5))
                 {
                     SetDestination(playerPos, true);
