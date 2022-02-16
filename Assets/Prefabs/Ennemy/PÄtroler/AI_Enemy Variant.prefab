@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1847121355682362, guid: 6dc87429bb5060148aa64bc5c1a6388e, type: 3}
       propertyPath: m_Name
-      value: AI_Enemy
+      value: AI_Enemy Variant
       objectReference: {fileID: 0}
     - target: {fileID: 4208729420380114, guid: 6dc87429bb5060148aa64bc5c1a6388e, type: 3}
       propertyPath: m_RootOrder
