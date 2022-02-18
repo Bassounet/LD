@@ -19,6 +19,7 @@ public class key : MonoBehaviour
     {
         if (other.CompareTag("Player") && collectable)
         {
+
             f.SetActive(true);
             Invoke("DestroyTheKey", 2f);
             other.GetComponent<AI_Behaviour>().GetKey = true;

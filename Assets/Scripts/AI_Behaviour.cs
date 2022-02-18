@@ -49,6 +49,7 @@ public class AI_Behaviour : MonoBehaviour
 
     public GameObject Key;
     public GameObject f;
+    public bool IsKeeper;
 
 
     [Header("Ronde")]
@@ -100,51 +101,58 @@ public class AI_Behaviour : MonoBehaviour
 
         #region Systeme de Garde
 
-        if (Auposte)
+        if (!isDead)
         {
 
-            anim.speed = 0;
 
-        }
-        else
-        {
 
-            anim.speed = 1;
 
-        }
 
-        if ( awarenessMeter_White != 0 && !readyToChasePlayer)
-        {
+            if (Auposte)
+            {
 
-           agent.speed = 0;
+                anim.speed = 0;
 
-        }
-        else
-        {
-            if (recentlySeenPlayer && !isSeeingPlayer)
-                Invoke("RetourLoge", 2f);
-            recentlySeenPlayer = false;
-            inGuard = true;
-        }
+            }
+            else
+            {
 
-        if (isSeeingPlayer)
-        {
+                anim.speed = 1;
 
-            recentlySeenPlayer = true;
+            }
 
-        }
-        else
-        {
+            if (awarenessMeter_White != 0 && !readyToChasePlayer)
+            {
 
-            Invoke("LostPLayer", 0.01f);
+                agent.speed = 0;
 
-        }
+            }
+            else
+            {
+                if (recentlySeenPlayer && !isSeeingPlayer)
+                    Invoke("RetourLoge", 2f);
+                recentlySeenPlayer = false;
+                inGuard = true;
+            }
+
+            if (isSeeingPlayer)
+            {
+
+                recentlySeenPlayer = true;
+
+            }
+            else
+            {
+
+                Invoke("LostPLayer", 0.01f);
+
+            }
 
 
             if (inGuard && !adystarted)
             {
 
-                SetDestination(PosLoge.transform, false); 
+                SetDestination(PosLoge.transform, false);
                 Loge = true;
                 adystarted = true;
 
@@ -152,36 +160,38 @@ public class AI_Behaviour : MonoBehaviour
 
             if (agent.remainingDistance < 1f && inGuard)
             {
-                
+
                 Auposte = true;
                 Invoke("WaitBeforeGo", 1f);
 
-                if (Loge && !aldyStartedScene && !adystartedGoTarget )
+                if (Loge && !aldyStartedScene && !adystartedGoTarget)
                 {
 
                     Invoke("GoToScene", TimeToGoScene);
 
                 }
 
-                if (Scene && !aldyStartedLoge && !adystartedGoTarget )
+                if (Scene && !aldyStartedLoge && !adystartedGoTarget)
                 {
 
                     Invoke("GoToLoge", TimeToGoLoge);
 
                 }
 
-        }
-        else
-        {
+            }
+            else
+            {
 
-            Auposte = false;
+                Auposte = false;
 
-        }
+            }
 
 
             #endregion
 
-        #region Rest_Update
+            #region Rest_Update
+
+        }
 
         CheckState();
         if (isDead || isUnconscious)
@@ -292,9 +302,16 @@ public class AI_Behaviour : MonoBehaviour
         {
 
             isAvailableForScripting = false;
-            Key.GetComponent<SpringJoint>().spring = 0;
-            Key.GetComponent<SphereCollider>().enabled = true;
-            Key.GetComponent<key>().collectable = true;            
+
+            if (IsKeeper)
+            {
+
+                Key.GetComponent<SpringJoint>().spring = 0;
+                Key.GetComponent<SphereCollider>().enabled = true;
+                Key.GetComponent<key>().collectable = true;
+
+            }
+                     
 
         }
     }
