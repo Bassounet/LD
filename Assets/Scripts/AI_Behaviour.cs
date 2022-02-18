@@ -47,6 +47,9 @@ public class AI_Behaviour : MonoBehaviour
     bool bladeInHand;
     Transform playerPos;
 
+    public GameObject Key;
+    public GameObject f;
+
 
     [Header("Ronde")]
 
@@ -60,6 +63,7 @@ public class AI_Behaviour : MonoBehaviour
     public bool adyawarness;
     public bool recentlySeenPlayer;
     public bool Auposte;
+    public bool GetKey;
     [SerializeField] GameObject PosLoge, PoseScence;
 
 
@@ -286,7 +290,12 @@ public class AI_Behaviour : MonoBehaviour
     {
         if(isDead || isUnconscious || isChoking || isKilling || knockoutByChoke || awarenessMeter_Red > 0)
         {
+
             isAvailableForScripting = false;
+            Key.GetComponent<SpringJoint>().spring = 0;
+            Key.GetComponent<SphereCollider>().enabled = true;
+            Key.GetComponent<key>().collectable = true;            
+
         }
     }
 

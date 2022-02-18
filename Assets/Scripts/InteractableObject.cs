@@ -34,6 +34,9 @@ public class InteractableObject : MonoBehaviour {
     GameObject door_1;
     GameObject door_2;
     CarryAndThrow carryAndThrow;
+    public GameObject Player;
+
+
 
 
     // Use this for initialization
@@ -327,34 +330,39 @@ public class InteractableObject : MonoBehaviour {
 
                     if (init)
                     {
-                        if (currentState == 1)
+
+                        if (Player.transform.GetComponent<AI_Behaviour>().GetKey)
                         {
-                            if (objectType == 0) myAnimation.Play("DOOR_Close_Side_B");
 
-                            //Double Door
-                            if (objectType == 1)
+                            if (currentState == 1)
                             {
-                                if (gameObject.name == "Door_1")
+                                if (objectType == 0) myAnimation.Play("DOOR_Close_Side_B");
+
+                                //Double Door
+                                if (objectType == 1)
                                 {
-                                    myAnimation.Play("DOOR_Close_Side_B");
-                                    door_2.GetComponent<InteractableObject>().currentState = 0;
-                                    door_2.GetComponent<Animation>().Play("DOOR_Close_Side_A");
+                                    if (gameObject.name == "Door_1")
+                                    {
+                                        myAnimation.Play("DOOR_Close_Side_B");
+                                        door_2.GetComponent<InteractableObject>().currentState = 0;
+                                        door_2.GetComponent<Animation>().Play("DOOR_Close_Side_A");
 
-                                    door_2.GetComponent<InteractableObject>().stringInteraction = "<b>F</b> <i>Open</i>";
-                                    door_2.GetComponent<InteractableObject>().stringDescription = "Breakable Door";
-                                    door_2.GetComponent<InteractableObject>().stringInteractionOption = "<b>F</b> <i>Keyhole Peek</i>";
-                                }
+                                        door_2.GetComponent<InteractableObject>().stringInteraction = "<b>F</b> <i>Open</i>";
+                                        door_2.GetComponent<InteractableObject>().stringDescription = "Breakable Door";
+                                        door_2.GetComponent<InteractableObject>().stringInteractionOption = "<b>F</b> <i>Keyhole Peek</i>";
+                                    }
 
-                                else
+                                    else
 
-                                {
-                                    myAnimation.Play("DOOR_Close_Side_A");
-                                    door_1.GetComponent<InteractableObject>().currentState = 0;
-                                    door_1.GetComponent<Animation>().Play("DOOR_Close_Side_B");
+                                    {
+                                        myAnimation.Play("DOOR_Close_Side_A");
+                                        door_1.GetComponent<InteractableObject>().currentState = 0;
+                                        door_1.GetComponent<Animation>().Play("DOOR_Close_Side_B");
 
-                                    door_1.GetComponent<InteractableObject>().stringInteraction = "<b>F</b> <i>Open</i>";
-                                    door_1.GetComponent<InteractableObject>().stringDescription = "Breakable Door";
-                                    door_1.GetComponent<InteractableObject>().stringInteractionOption = "<b>F</b> <i>Keyhole Peek</i>";
+                                        door_1.GetComponent<InteractableObject>().stringInteraction = "<b>F</b> <i>Open</i>";
+                                        door_1.GetComponent<InteractableObject>().stringDescription = "Breakable Door";
+                                        door_1.GetComponent<InteractableObject>().stringInteractionOption = "<b>F</b> <i>Keyhole Peek</i>";
+                                    }
                                 }
                             }
                         }
@@ -437,3 +445,21 @@ public class InteractableObject : MonoBehaviour {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
