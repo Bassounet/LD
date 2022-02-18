@@ -2728,8 +2728,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 321, y: 296}
-  m_SizeDelta: {x: 1702.5233, y: 276.23303}
+  m_AnchoredPosition: {x: 308, y: 296}
+  m_SizeDelta: {x: 1725.2733, y: 276.23303}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9217534012474525655
 CanvasRenderer:
@@ -2771,7 +2771,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Objectif : Neutralier le meteur en sc\xE9ne"
+  m_Text: "Objectif : Neutraliser le metteur en sc\xE8ne"
 --- !u!114 &4987942686565143707
 MonoBehaviour:
   m_ObjectHideFlags: 0
