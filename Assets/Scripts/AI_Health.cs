@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AI_Health : MonoBehaviour {
 
+    public bool isObjectif = false;
+    [SerializeField] private Text Validate;
     public bool mainHealth;
     public int maxHp = 40;
     public ParticleSystem FX_Blood;
@@ -17,6 +20,10 @@ public class AI_Health : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        if (isObjectif == true)
+        {
+            Validate.enabled = false;
+        }
         AI_Behaviour = transform.root.gameObject.GetComponent<AI_Behaviour>();
         if(mainHealth) SetKinematic(true, false);
         hp = maxHp;
@@ -72,6 +79,10 @@ public class AI_Health : MonoBehaviour {
     {
         if (mainHealth)
         {
+            if (isObjectif == true)
+            {
+                Validate.enabled = true;
+            }
             AI_Behaviour.isUnconscious = false;
             AI_Behaviour.isDead = true;
             SetKinematic(false, false);
